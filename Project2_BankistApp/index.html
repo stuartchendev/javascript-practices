@@ -1,117 +1,150 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Bankist</title>
-    <link rel="stylesheet" href="style.css">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300..700&display=swap" rel="stylesheet">
-</head>
+    <link rel="stylesheet" href="style.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300..700&display=swap"
+      rel="stylesheet"
+    />
+  </head>
 
-<body>
+  <body>
     <section class="header">
-        <img src="./media/lit3.1.png" alt="Bankist Logo" class="bankist-logo" lazyload="true" width="100" height="100">
-        <h1 class="login-title">Log in to get started</h1>
-        <form class="login-form" id="login-form">
-            <div class="input-group">
-                <input type="text" id="user" name="user" placeholder="User" pattern="[a-zA-Z0-9]{1,20}" required>
-            </div>
-            <div class="input-group">
-                <input type="password" id="pin" name="pin" placeholder="Pin" required>
-            </div>
-            <button type="submit" class="login-btn">→</button>
-        </form>
+      <img
+        src="./media/lit3.1.png"
+        alt="Bankist Logo"
+        class="bankist-logo"
+        lazyload="true"
+        width="100"
+        height="100"
+      />
+      <h1 class="login-title">Log in to get started</h1>
+      <form class="login-form" id="login-form">
+        <div class="input-group">
+          <input
+            type="text"
+            id="user"
+            name="user"
+            placeholder="User"
+            pattern="[a-zA-Z0-9]{1,20}"
+            required
+          />
+        </div>
+        <div class="input-group">
+          <input
+            type="password"
+            id="pin"
+            name="pin"
+            placeholder="Pin"
+            required
+          />
+        </div>
+        <button type="submit" class="login-btn">→</button>
+      </form>
     </section>
     <section class="main-content" id="main-content">
-        <article class="balance-content">
-            <div class="'balance-info">
-                <h2 class="balance-title">Current balance</h2>
-                <p class="balance-time">As of MM/DD//YYYY, MM/SS</p>
+      <article class="balance-content">
+        <div class="'balance-info">
+          <h2 class="balance-title">Current balance</h2>
+          <p class="balance-time">As of MM/DD//YYYY, MM/SS</p>
+        </div>
+        <div class="balance" id="balance">30,0000 $</div>
+      </article>
+      <article class="transactions">
+        <ul class="transactions-list" id="transactions-list">
+          <li class="transaction-item" id="transaction-item">
+            <div class="transaction-item-type">Deposit</div>
+            <div class="transaction-item-date">2023-10-01</div>
+            <div class="transaction-item-amount">1000 $</div>
+          </li>
+        </ul>
+        <div class="transf-money">
+          <h2 class="transf-title">Transfer money</h2>
+          <div class="input-io-group">
+            <div class="input-item">
+              <input type="text" id="transfer-to" required />
+              <label for="transfer-to">Transfer To</label>
             </div>
-            <div class="balance" id="balance">30,0000 $</div>
+            <div class="input-item">
+              <input type="text" id="transfer-amount" required />
+              <label for="transfer-amount">Amount</label>
+            </div>
+            <button type="button" class="transfer-btn" id="transfer-btn">
+              →
+            </button>
+          </div>
+        </div>
+        <div class="req-loan">
+          <h2 class="loan-title">Request loan</h2>
+          <div class="input-io-group">
+            <div class="input-item">
+              <input type="text" id="loan-amount" required />
+              <label for="loan-amount">Amount</label>
+            </div>
+            <button type="button" class="loan-btn" id="loan-btn">→</button>
+          </div>
+        </div>
+        <div class="close-account">
+          <h2 class="close-account-title">Close account</h2>
+          <div class="input-io-group">
+            <div class="input-item">
+              <input type="text" id="confirm-User" required />
+              <label for="confirm-User">Confirm User</label>
+            </div>
+            <div class="input-item">
+              <input type="text" id="confirm-Pin" required />
+              <label for="confirm-Pin">Confirm Pin</label>
+            </div>
+            <button type="button" class="confirm-btn" id="confirm-btn">
+              →
+            </button>
+          </div>
+        </div>
+      </article>
+      <article class="bankist-result-container">
+        <button class="sort-btn">↓Sort</button>
+        <article class="bankist-result">
+          <div class="cash-in">
+            <div class="cash-in-title">IN</div>
+            <div class="cash-in-amount" id="cash-in-amount">39,8888 $</div>
+          </div>
+          <div class="cash-out">
+            <div class="cash-out-title">OUT</div>
+            <div class="cash-out-amount" id="cash-in-amount">39,8888 $</div>
+          </div>
+          <div class="interest">
+            <div class="interest-title">INTEREST</div>
+            <div class="interest-amount" id="interest-amount">39,8888 $</div>
+          </div>
         </article>
-        <article class="transactions">
-            <ul class="transactions-list" id="transactions-list">
-                <li class="transaction-item" id="transaction-item">
-                    <div class="transaction-item-type">Deposit</div>
-                    <div class="transaction-item-date">2023-10-01</div>
-                    <div class="transaction-item-amount">1000 $</div>
-                </li>
-            </ul>
-            <div class="transf-money">
-                <h2 class="transf-title">Transfer money</h2>
-                <div class="input-io-group">
-                    <div class="input-item">
-                        <input type="text" id="transfer-to" required>
-                        <label for="transfer-to">Transfer To</label>
-                    </div>
-                    <div class="input-item">
-                        <input type="text" id="transfer-amount" required>
-                        <label for="transfer-amount">Amount</label>
-                    </div>
-                    <button type="button" class="transfer-btn" id="transfer-btn">→</button>
-                </div>
-            </div>
-            <div class="req-loan">
-                <h2 class="loan-title">Request loan</h2>
-                <div class="input-io-group">
-                    <div class="input-item">
-                        <input type="text" id="loan-amount" required>
-                        <label for="loan-amount">Amount</label>
-                    </div>
-                    <button type="button" class="loan-btn" id="loan-btn">→</button>
-                </div>
-            </div>
-            <div class="close-account">
-                <h2 class="close-account-title">Close account</h2>
-                <div class="input-io-group">
-                    <div class="input-item">
-                        <input type="text" id="confirm-User" required>
-                        <label for="confirm-User">Confirm User</label>
-                    </div>
-                    <div class="input-item">
-                        <input type="text" id="confirm-Pin" required>
-                        <label for="confirm-Pin">Confirm Pin</label>
-                    </div>
-                    <button type="button" class="confirm-btn" id="confirm-btn">→</button>
-                </div>
-            </div>
-        </article>
-        <article class="bankist-result-container">
-            <button class="sort-btn">↓Sort</button>
-            <article class="bankist-result">
-                <div class="cash-in">
-                    <div class="cash-in-title">IN</div>
-                    <div class="cash-in-amount" id="cash-in-amount">39,8888 $</div>
-                </div>
-                <div class="cash-out">
-                    <div class="cash-out-title">OUT</div>
-                    <div class="cash-out-amount" id="cash-in-amount">39,8888 $</div>
-                </div>
-                <div class="interest">
-                    <div class="interest-title">INTEREST</div>
-                    <div class="interest-amount" id="interest-amount">39,8888 $</div>
-                </div>
-            </article>
-            <div class="login-limit">
-                <div class="login-limit-title">Be logged out in</div>
-                <div class="login-limit-time" id="login-limit-time">09.34</div>
-            </div>
-        </article>
+        <div class="login-limit">
+          <div class="login-limit-title">Be logged out in</div>
+          <div class="login-limit-time" id="login-limit-time">09.34</div>
+        </div>
+      </article>
     </section>
     <footer class="footer">
-        <div class="footer-content">
-            <p>&copy; Copyright by
-                <a class="footer__link twitter-link" target="_blank" href="https://twitter.com/jonasschmedtman">Jonas
-                    Schmedtmann</a>.
-            </p>
-            <p>Enhanced by lit-cup 2025, Purpose for learning JavaScript Array Method</p>
-        </div>
+      <div class="footer-content">
+        <p>
+          &copy; Copyright by
+          <a
+            class="footer__link twitter-link"
+            target="_blank"
+            href="https://twitter.com/jonasschmedtman"
+            >Jonas Schmedtmann</a
+          >.
+        </p>
+        <p>
+          Enhanced by stuartchendev 2025, Purpose for learning JavaScript Array
+          Method
+        </p>
+      </div>
     </footer>
     <script src="script.js" type="module" defer></script>
-</body>
-
+  </body>
 </html>
