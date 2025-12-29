@@ -23,8 +23,16 @@ export const state = {
     results: [],
     page: 1,
     resultsPerPage: RES_PER_PAGE,
+    enriched: [],
   },
   bookmarks: [],
+
+  filters: {
+    cookingTime: {
+      min: null,
+      max: null,
+    },
+  },
 };
 
 const createRecipeObject = function (data) {
@@ -132,6 +140,31 @@ export const enrichSearchResult = async function (currPageSearchResults) {
     })
   );
   return enrichedResult;
+};
+
+export const filterByCookingTime = function (recipes, { min, max }) {
+  return recipes.filter(r => {
+    if (min !== null && r.cookingTime < min) return false;
+    if (max !== null && r.cookingTime >= max) return false;
+    return true;
+  });
+};
+
+export const deriveCookingTimeRange = function (activeValue) {
+  if (activeValue.length === 0) {
+    return { min: null, max: null };
+  }
+
+  const sorted = activeValue.sort((a, b) => a - b);
+
+  return {
+    min: sorted[0],
+    max: sorted[1] ?? null,
+  };
+};
+
+export const updateCookingTimeState = function (CookingTimeRange) {
+  state.filters.cookingTime = CookingTimeRange;
 };
 
 export const sortSearchResult = function (enrichedResults, sortOption) {

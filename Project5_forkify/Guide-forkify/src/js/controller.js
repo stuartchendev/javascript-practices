@@ -7,6 +7,7 @@ import bookmarksView from './view/bookmarkView.js';
 import addRecipeView from './view/addRecipeView.js';
 import sortView from './view/sortView.js';
 import { MODAL_CLOSE_SEC } from './config.js';
+import filterView from './view/filterView.js';
 
 // import icons from '../img/icons.svg'; // parcel 1
 // import icons from 'url:../img/icons.svg'; // parcel 2
@@ -108,12 +109,45 @@ const controlSearchResultsSorted = async function () {
     const enrichedResults = await model.enrichSearchResult(
       currPageSearchResults
     );
-
     // 3) sort currpage search results by enrichResults and sort option
     const sortedResults = model.sortSearchResult(enrichedResults, sortOption);
 
     // 4) update page with sorted results
     resultView.render(sortedResults);
+  } catch (error) {
+    resultView.renderError(error);
+  }
+};
+
+const controlFilterTagClick = async function () {
+  try {
+    // get CookingTime value from click button
+    const value = filterView.getActiveCookingTimeValue();
+    // set mix/max value state
+    const cookingTimeRange = model.deriveCookingTimeRange(value);
+    // update cookingTimeRange state
+    model.updateCookingTimeState(cookingTimeRange);
+
+    // check if search result is exist
+    const currPageSearchResults = model.getSearchResultPage();
+    if (currPageSearchResults.length === 0) {
+      sortView.setDefultOption();
+      throw new Error(
+        'No result to filter, Please try Search something first!!'
+      );
+    }
+    // enrich currpage search results by getSearchResultPage cookingtime and servings data
+    const enrichedResults = await model.enrichSearchResult(
+      currPageSearchResults
+    );
+
+    // filter enrichedResults by cookingtime
+    const filtered = model.filterByCookingTime(
+      enrichedResults,
+      model.state.filters.cookingTime
+    );
+    // redner currpage filtered
+    resultView.render(filtered);
   } catch (error) {
     resultView.renderError(error);
   }
@@ -219,6 +253,7 @@ const init = function () {
   sortView.addHandlerSort(controlSearchResultsSorted);
   paginationView.addHandlerPageButtonClick(controlPagination);
   addRecipeView.addHandlerUploadRecipe(controlAddRecipe);
+  filterView.addHandlerTagClick(controlFilterTagClick);
 };
 
 init();
