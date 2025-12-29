@@ -52,7 +52,7 @@
     color: $color-grey-dark-1;
     cursor: pointer;
   }
-  &-tag:hover {
+  &-tag.active {
     color: $color-grey-light-3;
     background-color: $color-grey-dark-1;
   }
