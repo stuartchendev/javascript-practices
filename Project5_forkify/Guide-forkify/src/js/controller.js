@@ -68,8 +68,10 @@ const controlRecipe = async function () {
 // view(Handler) -> control(fuction call) -> view(getQuery) -> model(load、render)
 const controlSearchResults = async function () {
   try {
-    // set sort default option
+    // set sort default option and disable tag
+    filterView.disableFilterTagActive();
     sortView.setDefultOption();
+
     resultView.renderSpinner();
 
     // 1) Get search input query
@@ -94,6 +96,8 @@ const controlSearchResults = async function () {
 
 const controlSearchResultsSorted = async function () {
   try {
+    // disable tag
+    filterView.disableFilterTagActive();
     resultView.renderSpinner();
     // 1) Get sort input option
     const sortOption = sortView.getSortOption();
@@ -121,6 +125,7 @@ const controlSearchResultsSorted = async function () {
 
 const controlFilterTagClick = async function () {
   try {
+    resultView.renderSpinner();
     // get CookingTime value from click button
     const value = filterView.getActiveCookingTimeValue();
     // set mix/max value state
@@ -155,6 +160,7 @@ const controlFilterTagClick = async function () {
 
 const controlPagination = function (gotoPage) {
   // set sort default option
+  filterView.disableFilterTagActive();
   sortView.setDefultOption();
   // console.log('gotroPage', gotoPage);
   // 3) Render new results side bar, by Pagination control

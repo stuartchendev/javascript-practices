@@ -8,6 +8,9 @@ class filterView {
       })
     );
   }
+  disableFilterTagActive() {
+    this._buttonElement.forEach(btn => btn.classList.remove('active'));
+  }
   toggleTagActive(btn) {
     btn.classList.toggle('active');
   }
