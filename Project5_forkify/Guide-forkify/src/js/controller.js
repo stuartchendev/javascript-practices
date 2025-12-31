@@ -81,13 +81,19 @@ const controlSearchResults = async function () {
     // 2) load search results from API call and store
     await model.loadSearchResults(query);
 
-    // 3) Render results side bar, use getSearchResultPage() to control, and Pagination control
+    // 3) Get 10 SearchResult
+    const currPageSearchResults = model.getSearchResultPage();
+
+    // 4) Enrich 10 search result and store
+    await model.setEnrichedSearchResult(currPageSearchResults);
+
+    // 5) Render results side bar, use getSearchResultPage() to control, and Pagination control
     // depends on how many recipes result show in one page
     // default page 1
     // console.log(model.state.search.results);
-    resultView.render(model.getSearchResultPage());
+    resultView.render(currPageSearchResults);
 
-    // 4) Render initial pagination button
+    // 6) Render initial pagination button
     paginationView.render(model.state.search);
   } catch (error) {
     resultView.renderError(error);
@@ -103,20 +109,18 @@ const controlSearchResultsSorted = async function () {
     const sortOption = sortView.getSortOption();
     if (!sortOption) return;
 
-    // check if search result is exist
-    const currPageSearchResults = model.getSearchResultPage();
-    if (currPageSearchResults.length === 0) {
+    // 2) Get enriched search result
+    const enrichedResults = model.state.search.enriched;
+
+    // 3)  check if search result is exist
+    if (!enrichedResults) {
       sortView.setDefultOption();
       throw new Error('No result to sort, Please try Search something first!!');
     }
-    // 2) enrich currpage search results by getSearchResultPage cookingtime and servings data
-    const enrichedResults = await model.enrichSearchResult(
-      currPageSearchResults
-    );
-    // 3) sort currpage search results by enrichResults and sort option
+    // 4) sort currpage search results by enrichResults and sort option
     const sortedResults = model.sortSearchResult(enrichedResults, sortOption);
 
-    // 4) update page with sorted results
+    // 5) update page with sorted results
     resultView.render(sortedResults);
   } catch (error) {
     resultView.renderError(error);
@@ -125,47 +129,54 @@ const controlSearchResultsSorted = async function () {
 
 const controlFilterTagClick = async function () {
   try {
+    // 0) spinner
     resultView.renderSpinner();
-    // get CookingTime value from click button
+    // 1) get CookingTime value from click button
     const value = filterView.getActiveCookingTimeValue();
-    // set mix/max value state
+    // 2) set mix/max value state
     const cookingTimeRange = model.deriveCookingTimeRange(value);
-    // update cookingTimeRange state
+    // 3) update cookingTimeRange state
     model.updateCookingTimeState(cookingTimeRange);
 
-    // check if search result is exist
-    const currPageSearchResults = model.getSearchResultPage();
-    if (currPageSearchResults.length === 0) {
+    // 4) Get enriched search result
+    const enrichedResults = model.state.search.enriched;
+
+    // 5) check if search result is exist
+    if (!enrichedResults) {
+      filterView.disableFilterTagActive();
       sortView.setDefultOption();
       throw new Error(
         'No result to filter, Please try Search something first!!'
       );
     }
-    // enrich currpage search results by getSearchResultPage cookingtime and servings data
-    const enrichedResults = await model.enrichSearchResult(
-      currPageSearchResults
-    );
 
-    // filter enrichedResults by cookingtime
+    // 6) filter enrichedResults by cookingtime
     const filtered = model.filterByCookingTime(
       enrichedResults,
       model.state.filters.cookingTime
     );
-    // redner currpage filtered
+    // 7) redner currpage filtered
     resultView.render(filtered);
   } catch (error) {
     resultView.renderError(error);
   }
 };
 
-const controlPagination = function (gotoPage) {
-  // set sort default option
+const controlPagination = async function (gotoPage) {
+  // 1) set sort default option
   filterView.disableFilterTagActive();
   sortView.setDefultOption();
-  // console.log('gotroPage', gotoPage);
-  // 3) Render new results side bar, by Pagination control
-  resultView.render(model.getSearchResultPage(gotoPage));
-  // 4) Render new initial pagination button
+
+  // 2) get currnet search results
+  const currPageSearchResults = model.getSearchResultPage(gotoPage);
+
+  // 3) Enrich 10 search result and store
+  await model.setEnrichedSearchResult(currPageSearchResults);
+
+  // 4) Render new results side bar, by Pagination control
+  resultView.render(currPageSearchResults);
+
+  // 5) Render new initial pagination button
   paginationView.render(model.state.search);
 };
 

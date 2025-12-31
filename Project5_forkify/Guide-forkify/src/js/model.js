@@ -23,7 +23,7 @@ export const state = {
     results: [],
     page: 1,
     resultsPerPage: RES_PER_PAGE,
-    enriched: [],
+    enriched: null,
   },
   bookmarks: [],
 
@@ -126,9 +126,9 @@ export const getSearchResultPage = function (page = state.search.page) {
 // sort option chnage -> result Spinner -> get currOption -> get currpage
 // -> enrich currpage cookingtime & servings data
 // -> sort enriched currpage -> re-render page
-export const enrichSearchResult = async function (currPageSearchResults) {
+export const setEnrichedSearchResult = async function (currPageSearchResults) {
   // return all Promise resolve to promise then await get value
-  const enrichedResult = await Promise.all(
+  state.search.enriched = await Promise.all(
     currPageSearchResults.map(async recipe => {
       const data = await AJAX(`${API_URL}/${recipe.id}?key=${API_KEY}`);
       //async return promise
@@ -139,7 +139,6 @@ export const enrichSearchResult = async function (currPageSearchResults) {
       };
     })
   );
-  return enrichedResult;
 };
 
 export const filterByCookingTime = function (recipes, { min, max }) {
