@@ -150,6 +150,38 @@ by Jonas Schmedtmann.
 
 ## Author
 
-Created by **Chen Yi-Ting (lit-cup)** — Aiming to master JavaScript, build solid web applications, and prepare for remote frontend roles.
+Created by **Yi-Ting (Stuart) Chen** — Aiming to master JavaScript, build solid web applications, and prepare for remote frontend roles.
 
-GitHub: [https://github.com/lit-cup](https://github.com/lit-cup)
+GitHub: [https://github.com/stuartchendev](https://github.com/stuartchendev)
+
+# 📘 README ｜ Engineering Note
+
+### ⚙️ Update vs Render Strategy (Filter / Sort Edge Case)
+
+During development, I encountered an edge case related to the `update()` method after applying filters to the search results.
+
+The `update()` method is designed to perform a DOM diff based on **index comparison**, assuming that the DOM structure remains stable between renders.
+
+This assumption holds true for operations like **sorting**, where the number of items stays the same and only the order changes.
+
+However, **filtering changes the DOM structure** by removing elements.
+
+As a result, some existing DOM nodes no longer exist, which can cause `curEl` to be `undefined` during the update process.
+
+To prevent unsafe DOM mutations, I added guard conditions to ensure that updates only occur when the corresponding DOM node exists:
+
+```jsx
+if (!newEl.isEqualNode(curEl) && curEl) {
+  curEl.setAttribute(attr.name, attr.value);
+}
+```
+
+This ensures that:
+
+- `update()` safely becomes a no-op when the DOM structure is no longer compatible
+- Filtered search results do not cause runtime errors
+- Sorting behavior remains unaffected
+
+This solution prioritizes **stability and minimal side effects**, while keeping the update logic lightweight and predictable.
+
+> Note: For more complex UI state transformations, a key-based diff or centralized state management would be required. This was intentionally avoided to keep the project scope focused.
